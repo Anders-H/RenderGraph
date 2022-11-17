@@ -160,9 +160,16 @@
 				<Relation>
 					<ID>Actor Kelly LeBrock</ID>
 				</Relation>
+				<Relation>
+					<ID>Actor Gene Wilder</ID>
+				</Relation>
 			</RelatesTo>
 		</Node>
-
+		<Node>
+			<ID>Actor Gene Wilder</ID>
+			<Text>Gene Wilder</Text>
+			<Type>B</Type>
+		</Node>
 		<Node>
 			<ID>Movie Hard to Kill</ID>
 			<Text>Hard to Kill (1990)</Text>
