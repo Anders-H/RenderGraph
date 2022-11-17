@@ -181,10 +181,10 @@ namespace RenderGraph
                 g.SmoothingMode = SmoothingMode.AntiAlias;
 
                 foreach (var node in Nodes)
-                    node.PaintRelations(g);
+                    node.PaintRelations(g, _pen);
 
                 foreach (var node in Nodes)
-                    node.PaintNode(g, Font);
+                    node.PaintNode(g, Font, _pen);
 
                 b.Save(filename, ImageFormat.Png);
             }
@@ -200,10 +200,10 @@ namespace RenderGraph
 #endif
 
             foreach (var node in Nodes)
-                node.PaintRelations(e.Graphics);
+                node.PaintRelations(e.Graphics, _pen);
 
             foreach (var node in Nodes)
-                node.PaintNode(e.Graphics, Font);
+                node.PaintNode(e.Graphics, Font, _pen);
         }
     }
 }
