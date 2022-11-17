@@ -12,6 +12,12 @@ namespace RenderGraph
 {
     public partial class MainWindow : Form
     {
+        public static readonly int ChangeAmt = 10;
+        public static readonly int SiblingsPerGeneration = 1000;
+        public static readonly int GenerationsOfUnimprovementBeforeScramble = 50;
+        public static int Generations = 0;
+        public static int GenerationsOfUnimprovement = 0;
+        public static int LastScore = int.MaxValue;
         public static readonly Random Random;
         public static int ImageWidth = 800;
         public static int ImageHeight = 600;
@@ -44,7 +50,7 @@ namespace RenderGraph
             using (var x = new OpenFileDialog())
             {
                 x.Title = @"Select XML-file to load";
-
+                x.Filter = @"XML (*.xml)|*.xml";
                 if (x.ShowDialog(this) != DialogResult.OK)
                 {
                     Close();
@@ -81,7 +87,7 @@ namespace RenderGraph
                 foreach (XmlElement r in n.SelectNodes("RelatesTo/Relation"))
                 {
                     var target = Nodes.GetNodeById(r.SelectSingleNode("ID").InnerText);
-                    var relation = new Relation(relationId++, r.SelectSingleNode("Text").InnerText, node, target);
+                    var relation = new Relation(relationId++, node, target);
                     node.Relations.Add(relation);
                 }
             }
@@ -98,31 +104,75 @@ namespace RenderGraph
 
         private void ScrambleModel()
         {
+            Generations++;
+
             var currentScore = Nodes.Score;
 
-            Text = $@"Render Graph ({currentScore})";
+            if (currentScore >= LastScore)
+                GenerationsOfUnimprovement++;
+            else
+                GenerationsOfUnimprovement = 0;
+
+            LastScore = currentScore;
+
+            Text = $@"Render Graph ({currentScore} - {Generations} - {GenerationsOfUnimprovement})";
 
             if (currentScore <= 0)
             {
                 timer1.Enabled = false;
-                // TODO Save
+                using (var x = new SaveFileDialog())
+                {
+                    x.Title = @"Save image";
+                    x.Filter = @"PNG (*.png)|*.png|SVG (*.svg)|*.svg";
+
+                    if (x.ShowDialog(this) != DialogResult.OK)
+                        return;
+
+                    if (x.FileName.EndsWith(".svg", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        SaveSvg();
+                    }
+                    else
+                    {
+                        SavePng();
+                    }
+                    Close();
+                }
                 return;
             }
 
             var generations = new List<Graph>();
 
-            for (var i = 0; i < 200; i++)
+            for (var i = 0; i < SiblingsPerGeneration; i++)
                 generations.Add(Nodes.CopyNodes());
 
             foreach (var generation in generations)
                 generation.CopyRelations(Nodes);
 
-            foreach (var generation in generations)
-                generation.Mutate();
+            if (GenerationsOfUnimprovement >= GenerationsOfUnimprovementBeforeScramble)
+            {
+                foreach (var generation in generations)
+                    generation.Scramble();
+            }
+            else
+            {
+                foreach (var generation in generations)
+                    generation.Mutate();
+            }
 
             var n = generations.OrderBy(x => x.Score).First();
 
             Nodes = n;
+        }
+
+        private void SaveSvg()
+        {
+
+        }
+
+        private void SavePng()
+        {
+
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)

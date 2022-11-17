@@ -1,125 +1,165 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Graph>
 	<Properties>
-
 		<PlayfieldWidth>1024</PlayfieldWidth>
 		<PlayfieldHeight>1024</PlayfieldHeight>
 		<NodeWidth>150</NodeWidth>
 		<NodeHeight>50</NodeHeight>
-
 	</Properties>
 	<Nodes>
-
 		<Node>
 			<ID>Root</ID>
 			<Text>Weird Science (1985)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Anthony Michael Hall</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 				<Relation>
 					<ID>Actor Ilan Mitchell-Smith</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 				<Relation>
 					<ID>Actor Kelly LeBrock</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 				<Relation>
 					<ID>Actor Bill Paxton</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
 		<Node>
 			<ID>Movie Stripes</ID>
 			<Text>Stripes (1981)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Bill Paxton</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
+		<Node>
+			<ID>Actor Bill Murray</ID>
+			<Text>Bill Murray</Text>
+			<Type>B</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Movie Stripes</ID>
+				</Relation>
+			</RelatesTo>
+		</Node>
+		<Node>
+			<ID>Actor John Candy</ID>
+			<Text>John Candy</Text>
+			<Type>B</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Movie Stripes</ID>
+				</Relation>
+			</RelatesTo>
+		</Node>
 		<Node>
 			<ID>Movie Aliens</ID>
 			<Text>Aliens (1986)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Bill Paxton</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
+		<Node>
+			<ID>Actor Sigourney Weaver</ID>
+			<Text>Sigourney Weaver</Text>
+			<Type>B</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Movie Aliens</ID>
+				</Relation>
+			</RelatesTo>
+		</Node>
+		<Node>
+			<ID>Actor Michael Biehn</ID>
+			<Text>Michael Biehn</Text>
+			<Type>B</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Movie Aliens</ID>
+				</Relation>
+			</RelatesTo>
+		</Node>
 		<Node>
 			<ID>Movie Commando</ID>
 			<Text>Commando (1985)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Bill Paxton</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
+		<Node>
+			<ID>Actor Arnold Schwarzenegger</ID>
+			<Text>Arnold Schwarzenegger</Text>
+			<Type>B</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Movie Commando</ID>
+				</Relation>
+				<Relation>
+					<ID>Movie The Terminator</ID>
+				</Relation>
+			</RelatesTo>
+		</Node>
 		<Node>
 			<ID>Movie The Terminator</ID>
 			<Text>The Terminator (1984)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Bill Paxton</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
+		<Node>
+			<ID>Actor Linda Hamilton</ID>
+			<Text>Linda Hamilton</Text>
+			<Type>B</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Movie The Terminator</ID>
+				</Relation>
+			</RelatesTo>
+		</Node>
+		<Node>
+			<ID>Actor Lance Henriksen</ID>
+			<Text>Lance Henriksen</Text>
+			<Type>B</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Movie The Terminator</ID>
+				</Relation>
+				<Relation>
+					<ID>Movie Aliens</ID>
+				</Relation>
+			</RelatesTo>
+		</Node>
 		<Node>
 			<ID>Movie The Lords of Discipline</ID>
 			<Text>The Lords of Discipline (1983)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Bill Paxton</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
 		<Node>
 			<ID>Movie The Woman in Red</ID>
 			<Text>The Woman in Red (1984)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Kelly LeBrock</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
 
@@ -128,102 +168,77 @@
 			<Text>Hard to Kill (1990)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Kelly LeBrock</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
 		<Node>
 			<ID>Movie The Wild Life</ID>
 			<Text>The Wild Life (1984)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Ilan Mitchell-Smith</ID>
-					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
 		<Node>
 			<ID>Movie Journey to the Center of the Earth</ID>
 			<Text>Journey to the Center of the Earth (1988)</Text>
 			<Type>A</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Actor Ilan Mitchell-Smith</ID>
 					<Text>Actor</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
 		<Node>
 			<ID>Actor Anthony Michael Hall</ID>
 			<Text>Anthony Michael Hall</Text>
 			<Type>B</Type>
 			<RelatesTo>
-
 				<Relation>
 					<ID>Movie Pirates of Silicon Valley</ID>
-					<Text>Movie</Text>
 				</Relation>
-
 				<Relation>
 					<ID>Movie The Breakfast Club</ID>
-					<Text>Movie</Text>
 				</Relation>
-
 				<Relation>
 					<ID>Movie National Lampoon's Vacation</ID>
-					<Text>Movie</Text>
 				</Relation>
-
 			</RelatesTo>
 		</Node>
-
 		<Node>
 			<ID>Movie Pirates of Silicon Valley</ID>
 			<Text>Pirates of Silicon Valley (1999)</Text>
 			<Type>A</Type>
 		</Node>
-
 		<Node>
 			<ID>Movie The Breakfast Club</ID>
 			<Text>The Breakfast Club (1985)</Text>
 			<Type>A</Type>
 		</Node>
-
 		<Node>
 			<ID>Movie National Lampoon's Vacation</ID>
 			<Text>National Lampoon's Vacation (1983)</Text>
 			<Type>A</Type>
 		</Node>
-
 		<Node>
 			<ID>Actor Ilan Mitchell-Smith</ID>
 			<Text>Ilan Mitchell-Smith</Text>
 			<Type>B</Type>
 		</Node>
-
 		<Node>
 			<ID>Actor Kelly LeBrock</ID>
 			<Text>Kelly LeBrock</Text>
 			<Type>B</Type>
 		</Node>
-
 		<Node>
 			<ID>Actor Bill Paxton</ID>
 			<Text>Bill Paxton</Text>
 			<Type>B</Type>
 		</Node>
-
 	</Nodes>
 </Graph>

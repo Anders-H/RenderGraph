@@ -49,7 +49,7 @@ namespace RenderGraph
             {
                 var relatesTo = target.GetNodeById(relation.TargetNode.Id);
 
-                var r = new Relation(relation.Id, relation.Name, this, relatesTo);
+                var r = new Relation(relation.Id, this, relatesTo);
 
                 Relations.Add(r);
             }

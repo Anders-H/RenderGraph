@@ -84,7 +84,7 @@ namespace RenderGraph
 
         public void Mutate()
         {
-            var changes = MainWindow.Random.Next(2) + 1;
+            var changes = MainWindow.Random.Next(MainWindow.ChangeAmt) + 1;
 
             for (var i = 0; i < changes; i++)
             {
@@ -92,6 +92,16 @@ namespace RenderGraph
                 var n = this[index];
                 n.ToRandomLocation();
             }
+
+            CalculateScore();
+        }
+
+        public void Scramble()
+        {
+            var changes = MainWindow.Random.Next(MainWindow.ChangeAmt) + 1;
+
+            foreach (var n in this)
+                n.ToRandomLocation();
 
             CalculateScore();
         }
