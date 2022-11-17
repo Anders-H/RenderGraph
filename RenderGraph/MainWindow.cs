@@ -13,6 +13,7 @@ namespace RenderGraph
 {
     public partial class MainWindow : Form
     {
+        private readonly Pen _pen = new Pen(Color.Black, 2f);
         public static readonly int ChangeAmt = 10;
         public static readonly int SiblingsPerGeneration = 1000;
         public static readonly int GenerationsOfUnimprovementBeforeScramble = 50;

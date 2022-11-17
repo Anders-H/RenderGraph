@@ -134,13 +134,13 @@ namespace RenderGraph
         private static bool IsOnSegment(Point p, Point q, Point r) =>
             q.X <= Math.Max(p.X, r.X) && q.X >= Math.Min(p.X, r.X) && q.Y <= Math.Max(p.Y, r.Y) && q.Y >= Math.Min(p.Y, r.Y);
 
-        public void PaintRelations(Graphics g)
+        public void PaintRelations(Graphics g, Pen p)
         {
             foreach (var targetPosition in from relation in Relations where relation.TargetNode != null select relation.TargetNode.GetCenter())
-                g.DrawLine(Pens.Black, GetCenter(), targetPosition);
+                g.DrawLine(p, GetCenter(), targetPosition);
         }
 
-        public void PaintNode(Graphics g, Font font)
+        public void PaintNode(Graphics g, Font font, Pen p)
         {
             var format = new StringFormat();
             format.Alignment = StringAlignment.Center;
@@ -159,8 +159,8 @@ namespace RenderGraph
             }
 
             g.FillRectangle(b, Location);
+            g.DrawRectangle(p, Location);
             g.DrawString(Text, font, Brushes.White, Location, format);
-            g.DrawRectangle(Pens.Black, Location);
         }
     }
 }
