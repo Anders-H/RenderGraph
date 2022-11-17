@@ -7,30 +7,35 @@ namespace RenderGraph
 {
     public class Node
     {
+        public string Id { get; }
         public Rectangle Location { get; set; }
-        public string Name { get; set; }
+        public string Text { get; set; }
+        public string NodeType { get; set; }
         public List<Relation> Relations { get; }
 
-        public Node(string name)
+        public Node(string id, string text)
         {
+            Id = id;
             Location = GetRandomLocation();
             Relations = new List<Relation>();
-            Name = name;
+            Text = text;
+            NodeType = "";
         }
 
         public Node CopyNode() =>
-            new Node(Name)
+            new Node(Id, Text)
             {
-                Location = Location
+                Location = Location,
+                NodeType = NodeType
             };
 
         public void CopyRelations(Graph source, Graph target)
         {
-            var sourceNode = source.GetNodeByName(Name);
+            var sourceNode = source.GetNodeById(Id);
 
             foreach (var relation in sourceNode.Relations)
             {
-                var relatesTo = target.GetNodeByName(relation.TargetNode.Name);
+                var relatesTo = target.GetNodeById(relation.TargetNode.Id);
 
                 var r = new Relation(relation.Name, this, relatesTo);
 
@@ -125,8 +130,24 @@ namespace RenderGraph
 
         public void PaintNode(Graphics g, Font font)
         {
-            g.FillRectangle(Brushes.Bisque, Location);
-            g.DrawString(Name, font, Brushes.Black, Location.X + 2, Location.Y + 2);
+            var format = new StringFormat();
+            format.Alignment = StringAlignment.Center;
+            format.LineAlignment = StringAlignment.Center;
+
+            var b = Brushes.Black;
+
+            switch (NodeType)
+            {
+                case "A":
+                    b = Brushes.DarkBlue;
+                    break;
+                case "B":
+                    b = Brushes.DarkViolet;
+                    break;
+            }
+
+            g.FillRectangle(b, Location);
+            g.DrawString(Text, font, Brushes.White, Location, format);
             g.DrawRectangle(Pens.Black, Location);
         }
     }

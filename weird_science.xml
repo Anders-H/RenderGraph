@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Graph>
+	<Properties>
+
+		<PlayfieldWidth>1024</PlayfieldWidth>
+		<PlayfieldHeight>1024</PlayfieldHeight>
+		<NodeWidth>150</NodeWidth>
+		<NodeHeight>50</NodeHeight>
+
+	</Properties>
+	<Nodes>
+
+		<Node>
+			<ID>Root</ID>
+			<Text>Weird Science (1985)</Text>
+			<Type>A</Type>
+			<RelatesTo>
+				<Relation>
+					<ID>Actor Anthony Michael Hall</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+				<Relation>
+					<ID>Actor Ilan Mitchell-Smith</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+				<Relation>
+					<ID>Actor Kelly LeBrock</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+				<Relation>
+					<ID>Actor Bill Paxton</ID>
+					<Text>Actor</Text>
+				</Relation>
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Actor Anthony Michael Hall</ID>
+			<Text>Anthony Michael Hall</Text>
+			<Type>B</Type>
+			<RelatesTo>
+
+				<Relation>
+					<ID>Movie Pirates of Silicon Valley</ID>
+					<Text>Movie</Text>
+				</Relation>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Movie Pirates of Silicon Valley</ID>
+			<Text>Pirates of Silicon Valley</Text>
+			<Type>A</Type>
+			<RelatesTo>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Actor Ilan Mitchell-Smith</ID>
+			<Text>Ilan Mitchell-Smith</Text>
+			<Type>B</Type>
+			<RelatesTo>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Actor Kelly LeBrock</ID>
+			<Text>Kelly LeBrock</Text>
+			<Type>B</Type>
+			<RelatesTo>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Actor Bill Paxton</ID>
+			<Text>Bill Paxton</Text>
+			<Type>B</Type>
+			<RelatesTo>
+
+			</RelatesTo>
+		</Node>
+
+	</Nodes>
+</Graph>

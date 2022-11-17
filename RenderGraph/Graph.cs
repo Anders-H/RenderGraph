@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace RenderGraph
@@ -23,8 +22,8 @@ namespace RenderGraph
                 n.CopyRelations(source, this);
         }
 
-        public Node GetNodeByName(string name) =>
-            this.First(n => n.Name == name);
+        public Node GetNodeById(string id) =>
+            this.First(n => n.Id == id);
 
         public void AddingCompleted() =>
             CalculateScore();
@@ -47,8 +46,6 @@ namespace RenderGraph
 
             var relations = GetAllRelations();
 
-            Console.WriteLine(@"-----------------------------------------------------");
-
             foreach (var r1 in relations)
             {
                 foreach (var r2 in relations)
@@ -65,16 +62,9 @@ namespace RenderGraph
                         continue;
 
                     if (firstRelationStart.LinesIntersect(firstRelationEnd, lastRelationStart, lastRelationEnd))
-                    {
-                        Console.WriteLine($@"Intersection: {firstRelationStart.Name} x {firstRelationEnd.Name} - {lastRelationStart.Name} x {lastRelationEnd.Name}");
                         score += 5;
-                    }
-
-                    Console.WriteLine(r1.TargetNode.Name + @" --- " + r2.TargetNode.Name);
                 }
             }
-
-            Console.WriteLine(@"+++-----------------------------------------------+++");
 
             score += relations.Sum(r => (
                 from n in this
