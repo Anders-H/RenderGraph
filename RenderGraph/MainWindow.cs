@@ -72,6 +72,8 @@ namespace RenderGraph
                 Nodes.Add(node);
             }
 
+            var relationId = 0;
+
             foreach (XmlElement n in doc.SelectNodes("Nodes/Node"))
             {
                 var node = Nodes.GetNodeById(n.SelectSingleNode("ID").InnerText);
@@ -79,7 +81,7 @@ namespace RenderGraph
                 foreach (XmlElement r in n.SelectNodes("RelatesTo/Relation"))
                 {
                     var target = Nodes.GetNodeById(r.SelectSingleNode("ID").InnerText);
-                    var relation = new Relation(r.SelectSingleNode("Text").InnerText, node, target);
+                    var relation = new Relation(relationId++, r.SelectSingleNode("Text").InnerText, node, target);
                     node.Relations.Add(relation);
                 }
             }
