@@ -40,6 +40,76 @@
 		</Node>
 
 		<Node>
+			<ID>Movie Stripes</ID>
+			<Text>Stripes (1981)</Text>
+			<Type>A</Type>
+			<RelatesTo>
+
+				<Relation>
+					<ID>Actor Bill Paxton</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Movie Aliens</ID>
+			<Text>Aliens (1986)</Text>
+			<Type>A</Type>
+			<RelatesTo>
+
+				<Relation>
+					<ID>Actor Bill Paxton</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Movie Commando</ID>
+			<Text>Commando (1985)</Text>
+			<Type>A</Type>
+			<RelatesTo>
+
+				<Relation>
+					<ID>Actor Bill Paxton</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Movie The Terminator</ID>
+			<Text>The Terminator (1984)</Text>
+			<Type>A</Type>
+			<RelatesTo>
+
+				<Relation>
+					<ID>Actor Bill Paxton</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
+			<ID>Movie The Lords of Discipline</ID>
+			<Text>The Lords of Discipline (1983)</Text>
+			<Type>A</Type>
+			<RelatesTo>
+
+				<Relation>
+					<ID>Actor Bill Paxton</ID>
+					<Text>Actor</Text>
+				</Relation>
+
+			</RelatesTo>
+		</Node>
+
+		<Node>
 			<ID>Movie The Woman in Red</ID>
 			<Text>The Woman in Red (1984)</Text>
 			<Type>A</Type>

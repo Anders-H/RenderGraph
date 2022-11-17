@@ -39,7 +39,7 @@ namespace RenderGraph
                     if (node2 == node1)
                         continue;
 
-                    if (node1.Location.IntersectsWith(node2.Location))
+                    if (node1.HitTest.IntersectsWith(node2.Location))
                         score += 10;
                 }
             }
@@ -84,7 +84,7 @@ namespace RenderGraph
 
         public void Mutate()
         {
-            var changes = MainWindow.Random.Next(5) + 1;
+            var changes = MainWindow.Random.Next(2) + 1;
 
             for (var i = 0; i < changes; i++)
             {

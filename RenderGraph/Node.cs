@@ -7,10 +7,12 @@ namespace RenderGraph
 {
     public class Node
     {
+        private const int _margin = 8;
+        private Rectangle _location;
         public string Id { get; }
-        public Rectangle Location { get; set; }
         public string Text { get; set; }
         public string NodeType { get; set; }
+        public Rectangle HitTest { get; private set; }
         public List<Relation> Relations { get; }
 
         public Node(string id, string text)
@@ -20,6 +22,16 @@ namespace RenderGraph
             Relations = new List<Relation>();
             Text = text;
             NodeType = "";
+        }
+
+        public Rectangle Location
+        {
+            get => _location;
+            set
+            {
+                _location = value;
+                HitTest = new Rectangle(_location.X - _margin, _location.Y - _margin, _location.Width + _margin + _margin, _location.Height + _margin + _margin);
+            }
         }
 
         public Node CopyNode() =>
@@ -44,7 +56,7 @@ namespace RenderGraph
         }
 
         private static Rectangle GetRandomLocation() =>
-            new Rectangle(MainWindow.Random.Next(MainWindow.ImageWidth - MainWindow.NodeWidth), MainWindow.Random.Next(MainWindow.ImageHeight - MainWindow.NodeHeight), MainWindow.NodeWidth, MainWindow.NodeHeight);
+            new Rectangle(_margin + MainWindow.Random.Next(MainWindow.ImageWidth - (MainWindow.NodeWidth + _margin + _margin)), _margin + MainWindow.Random.Next(MainWindow.ImageHeight - (MainWindow.NodeHeight + _margin)), MainWindow.NodeWidth, MainWindow.NodeHeight);
 
         public void ToRandomLocation() =>
             Location = GetRandomLocation();
@@ -68,17 +80,17 @@ namespace RenderGraph
             var startPoint = start.GetCenter();
             var endPoint = end.GetCenter();
 
-            var lA1 = new Point(Location.X, Location.Y);
-            var lA2 = new Point(Location.X + Location.Width, Location.Y);
+            var lA1 = new Point(HitTest.X, HitTest.Y);
+            var lA2 = new Point(HitTest.X + HitTest.Width, HitTest.Y);
 
-            var lB1 = new Point(Location.X + Location.Width, Location.Y);
-            var lB2 = new Point(Location.X + Location.Width, Location.Y + Location.Height);
+            var lB1 = new Point(HitTest.X + HitTest.Width, HitTest.Y);
+            var lB2 = new Point(HitTest.X + HitTest.Width, HitTest.Y + HitTest.Height);
 
-            var lC1 = new Point(Location.X + Location.Width, Location.Y + Location.Height);
-            var lC2 = new Point(Location.X, Location.Y + Location.Height);
+            var lC1 = new Point(HitTest.X + HitTest.Width, HitTest.Y + HitTest.Height);
+            var lC2 = new Point(HitTest.X, HitTest.Y + HitTest.Height);
 
-            var lD1 = new Point(Location.X, Location.Y);
-            var lD2 = new Point(Location.X, Location.Y + Location.Height);
+            var lD1 = new Point(HitTest.X, HitTest.Y);
+            var lD2 = new Point(HitTest.X, HitTest.Y + HitTest.Height);
 
             return DoLinesIntersect(startPoint, endPoint, lA1, lA2)
                 || DoLinesIntersect(startPoint, endPoint, lB1, lB2)

@@ -111,7 +111,7 @@ namespace RenderGraph
 
             var generations = new List<Graph>();
 
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < 200; i++)
                 generations.Add(Nodes.CopyNodes());
 
             foreach (var generation in generations)
