@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -130,11 +131,11 @@ namespace RenderGraph
 
                     if (x.FileName.EndsWith(".svg", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        SaveSvg();
+                        SaveSvg(x.FileName);
                     }
                     else
                     {
-                        SavePng();
+                        SavePng(x.FileName);
                     }
                     Close();
                 }
@@ -165,20 +166,33 @@ namespace RenderGraph
             Nodes = n;
         }
 
-        private void SaveSvg()
+        private void SaveSvg(string filename)
         {
 
         }
 
-        private void SavePng()
+        private void SavePng(string filename)
         {
+            using (var b = new Bitmap(ImageWidth, ImageHeight))
+            {
+                var g = Graphics.FromImage(b);
+                g.Clear(Color.DarkGreen);
+                g.SmoothingMode = SmoothingMode.AntiAlias;
 
+                foreach (var node in Nodes)
+                    node.PaintRelations(g);
+
+                foreach (var node in Nodes)
+                    node.PaintNode(g, Font);
+
+                b.Save(filename, ImageFormat.Png);
+            }
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(Color.DarkGreen);
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.SmoothingMode = SmoothingMode.None;
 
 #if DEBUG
             e.Graphics.DrawRectangle(Pens.DarkOliveGreen, 0, 0, ImageWidth, ImageHeight);
