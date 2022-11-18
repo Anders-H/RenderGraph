@@ -61,7 +61,7 @@ namespace RenderGraph
         public void ToRandomLocation() =>
             Location = GetRandomLocation();
 
-        private Point GetCenter() =>
+        public Point GetCenter() =>
             new Point(Location.X + Location.Width / 2, Location.Y + Location.Height / 2);
 
         public bool LinesIntersect(Node other, Node target1, Node target2)

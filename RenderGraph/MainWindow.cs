@@ -167,7 +167,38 @@ namespace RenderGraph
 
         private void SaveSvg(string filename)
         {
+            using (var sw = new StreamWriter(filename, false, Encoding.UTF8))
+            {
+                sw.WriteLine($@"<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" viewBox=""0 0 {ImageWidth} {ImageHeight}"">");
 
+                foreach (var node in Nodes)
+                {
+                    foreach (var targetPosition in from relation in node.Relations where relation.TargetNode != null select relation.TargetNode.GetCenter())
+                    {
+                        var p = node.GetCenter();
+                        sw.WriteLine($@"<line x1=""{p.X}"" y1=""{p.Y}"" x2=""{targetPosition.X}"" y2=""{targetPosition.Y}""  style=""stroke:#000000;stroke-width:2""/>");
+                    }
+                }
+
+                foreach (var node in Nodes)
+                {
+                    var background = "#000000";
+
+                    if (node.NodeType == "A")
+                        background = "#000077";
+                    else if (node.NodeType == "B")
+                        background = "#660066";
+
+                    sw.WriteLine($@"<rect x=""{node.Location.X}"" y=""{node.Location.Y}"" width=""{node.Location.Width}"" height=""{node.Location.Height}"" stroke=""#000000"" stroke-width=""2px"" fill=""{background}""/>
+<svg x=""{node.Location.X}"" y=""{node.Location.Y}"" width=""{node.Location.Width}"" height=""{node.Location.Height}"">
+<text x=""50%"" y=""50%"" dominant-baseline=""middle"" text-anchor=""middle"" fill=""#ffffff"">{node.Text}</text>
+</svg>");
+                }
+
+                sw.WriteLine(@"</svg>");
+                sw.Flush();
+                sw.Close();
+            }
         }
 
         private void SavePng(string filename)
@@ -242,7 +273,6 @@ namespace RenderGraph
                 {
                     SavePng(x.FileName);
                 }
-                Close();
             }
         }
     }
