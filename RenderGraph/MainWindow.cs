@@ -14,12 +14,12 @@ namespace RenderGraph
     public partial class MainWindow : Form
     {
         private readonly Pen _pen = new Pen(Color.Black, 2f);
-        public static readonly int ChangeAmt = 10;
-        public static readonly int SiblingsPerGeneration = 1000;
-        public static readonly int GenerationsOfUnimprovementBeforeScramble = 50;
-        public static int Generations = 0;
-        public static int GenerationsOfUnimprovement = 0;
-        public static int LastScore = int.MaxValue;
+        public static int ChangeAmt;
+        public static int SiblingsPerGeneration;
+        public static int GenerationsOfUnimprovementBeforeScramble;
+        public static int Generations;
+        public static int GenerationsOfUnimprovement;
+        public static int LastScore;
         public static readonly Random Random;
         public static int ImageWidth = 800;
         public static int ImageHeight = 600;
@@ -95,7 +95,8 @@ namespace RenderGraph
             }
 
             Nodes.AddingCompleted();
-            timer1.Enabled = true;
+            ContextMenuStrip = EditContextMenu;
+            Refresh();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -117,29 +118,21 @@ namespace RenderGraph
 
             LastScore = currentScore;
 
-            Text = $@"Render Graph ({currentScore} - {Generations} - {GenerationsOfUnimprovement})";
+            if (Generations%3 == 0 && SiblingsPerGeneration < 1500)
+                SiblingsPerGeneration++;
+
+            if (Generations%45 == 0 && ChangeAmt < 20)
+                ChangeAmt++;
+
+            if (Generations%35 == 0 && GenerationsOfUnimprovementBeforeScramble > 40)
+                GenerationsOfUnimprovementBeforeScramble--;
+
+            Text = $@"Render Graph [Gen: {Generations}, Score: {currentScore}, Generations without improvement: {GenerationsOfUnimprovement} ({GenerationsOfUnimprovementBeforeScramble}), Siblings per generation: {SiblingsPerGeneration}, Change amount: {ChangeAmt}]";
 
             if (currentScore <= 0)
             {
                 timer1.Enabled = false;
-                using (var x = new SaveFileDialog())
-                {
-                    x.Title = @"Save image";
-                    x.Filter = @"PNG (*.png)|*.png|SVG (*.svg)|*.svg";
-
-                    if (x.ShowDialog(this) != DialogResult.OK)
-                        return;
-
-                    if (x.FileName.EndsWith(".svg", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        SaveSvg(x.FileName);
-                    }
-                    else
-                    {
-                        SavePng(x.FileName);
-                    }
-                    Close();
-                }
+                Refresh();
                 return;
             }
 
@@ -151,10 +144,14 @@ namespace RenderGraph
             foreach (var generation in generations)
                 generation.CopyRelations(Nodes);
 
+            var scrambeled = false;
+
             if (GenerationsOfUnimprovement >= GenerationsOfUnimprovementBeforeScramble)
             {
                 foreach (var generation in generations)
                     generation.Scramble();
+
+                scrambeled = true;
             }
             else
             {
@@ -164,7 +161,8 @@ namespace RenderGraph
 
             var n = generations.OrderBy(x => x.Score).First();
 
-            Nodes = n;
+            if (scrambeled || n.Score < Nodes.Score)
+                Nodes = n;
         }
 
         private void SaveSvg(string filename)
@@ -194,16 +192,58 @@ namespace RenderGraph
         {
             e.Graphics.Clear(Color.DarkGreen);
             e.Graphics.SmoothingMode = SmoothingMode.None;
-
-#if DEBUG
             e.Graphics.DrawRectangle(Pens.DarkOliveGreen, 0, 0, ImageWidth, ImageHeight);
-#endif
 
             foreach (var node in Nodes)
                 node.PaintRelations(e.Graphics, _pen);
 
             foreach (var node in Nodes)
                 node.PaintNode(e.Graphics, Font, _pen);
+
+            if (timer1.Enabled)
+                e.Graphics.DrawString("Running...", Font, Brushes.Red, 10, 10);
+        }
+
+        private void tryToOrganizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeAmt = 2;
+            SiblingsPerGeneration = 5;
+            GenerationsOfUnimprovementBeforeScramble = 100;
+            Generations = 0;
+            GenerationsOfUnimprovement = 0;
+            LastScore = int.MaxValue;
+            ContextMenuStrip = RunningContextMenu;
+            timer1.Enabled = true;
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+            Text = @"Render Graph";
+            ContextMenuStrip = EditContextMenu;
+            Refresh();
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var x = new SaveFileDialog())
+            {
+                x.Title = @"Save image";
+                x.Filter = @"PNG (*.png)|*.png|SVG (*.svg)|*.svg";
+
+                if (x.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                if (x.FileName.EndsWith(".svg", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    SaveSvg(x.FileName);
+                }
+                else
+                {
+                    SavePng(x.FileName);
+                }
+                Close();
+            }
         }
     }
 }

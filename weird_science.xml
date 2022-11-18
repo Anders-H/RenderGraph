@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Graph>
 	<Properties>
-		<PlayfieldWidth>1024</PlayfieldWidth>
-		<PlayfieldHeight>1024</PlayfieldHeight>
+		<PlayfieldWidth>1920</PlayfieldWidth>
+		<PlayfieldHeight>1080</PlayfieldHeight>
 		<NodeWidth>150</NodeWidth>
 		<NodeHeight>50</NodeHeight>
 	</Properties>
