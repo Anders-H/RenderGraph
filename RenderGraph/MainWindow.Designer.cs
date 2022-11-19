@@ -33,9 +33,11 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.EditContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tryToOrganizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RunningContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditContextMenu.SuspendLayout();
             this.RunningContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -48,9 +50,11 @@
             // 
             this.EditContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tryToOrganizeToolStripMenuItem,
+            this.propertiesToolStripMenuItem,
             this.saveImageToolStripMenuItem});
             this.EditContextMenu.Name = "EditContextMenu";
-            this.EditContextMenu.Size = new System.Drawing.Size(181, 70);
+            this.EditContextMenu.Size = new System.Drawing.Size(152, 70);
+            this.EditContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.EditContextMenu_Opening);
             // 
             // tryToOrganizeToolStripMenuItem
             // 
@@ -58,6 +62,13 @@
             this.tryToOrganizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tryToOrganizeToolStripMenuItem.Text = "Try to organize";
             this.tryToOrganizeToolStripMenuItem.Click += new System.EventHandler(this.tryToOrganizeToolStripMenuItem_Click);
+            // 
+            // saveImageToolStripMenuItem
+            // 
+            this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveImageToolStripMenuItem.Text = "Save image...";
+            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
             // RunningContextMenu
             // 
@@ -73,12 +84,18 @@
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
-            // saveImageToolStripMenuItem
+            // imageList1
             // 
-            this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveImageToolStripMenuItem.Text = "Save image...";
-            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "lock.png");
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.propertiesToolStripMenuItem.Text = "Properties...";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -94,6 +111,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseDown);
             this.EditContextMenu.ResumeLayout(false);
             this.RunningContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -108,6 +126,8 @@
         private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tryToOrganizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
 

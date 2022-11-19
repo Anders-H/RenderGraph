@@ -7,8 +7,9 @@ namespace RenderGraph
 {
     public class Node
     {
-        private const int _margin = 8;
+        private const int Margin = 8;
         private Rectangle _location;
+        public bool Selected { get; set; }
         public string Id { get; }
         public string Text { get; set; }
         public string NodeType { get; set; }
@@ -30,7 +31,7 @@ namespace RenderGraph
             set
             {
                 _location = value;
-                HitTest = new Rectangle(_location.X - _margin, _location.Y - _margin, _location.Width + _margin + _margin, _location.Height + _margin + _margin);
+                HitTest = new Rectangle(_location.X - Margin, _location.Y - Margin, _location.Width + Margin + Margin, _location.Height + Margin + Margin);
             }
         }
 
@@ -56,7 +57,7 @@ namespace RenderGraph
         }
 
         private static Rectangle GetRandomLocation() =>
-            new Rectangle(_margin + MainWindow.Random.Next(MainWindow.ImageWidth - (MainWindow.NodeWidth + _margin + _margin)), _margin + MainWindow.Random.Next(MainWindow.ImageHeight - (MainWindow.NodeHeight + _margin)), MainWindow.NodeWidth, MainWindow.NodeHeight);
+            new Rectangle(Margin + MainWindow.Random.Next(MainWindow.ImageWidth - (MainWindow.NodeWidth + Margin + Margin)), Margin + MainWindow.Random.Next(MainWindow.ImageHeight - (MainWindow.NodeHeight + Margin)), MainWindow.NodeWidth, MainWindow.NodeHeight);
 
         public void ToRandomLocation() =>
             Location = GetRandomLocation();
@@ -131,6 +132,14 @@ namespace RenderGraph
             return v == 0 ? (byte)0 : v > 0 ? (byte)1 : (byte)2;
         }
 
+        public bool NodeIsAt(int x, int y)
+        {
+            var r = Rectangle.Intersect(Location, new Rectangle(x, y, 1, 1)).Width >= 2;
+
+            return true;
+        }
+            
+
         private static bool IsOnSegment(Point p, Point q, Point r) =>
             q.X <= Math.Max(p.X, r.X) && q.X >= Math.Min(p.X, r.X) && q.Y <= Math.Max(p.Y, r.Y) && q.Y >= Math.Min(p.Y, r.Y);
 
@@ -161,6 +170,15 @@ namespace RenderGraph
             g.FillRectangle(b, Location);
             g.DrawRectangle(p, Location);
             g.DrawString(Text, font, Brushes.White, Location, format);
+        }
+
+        public void PaintSelection(Graphics g)
+        {
+            using (var b = new SolidBrush(Color.FromArgb(127, 40, 40, 40)))
+            {
+                g.FillRectangle(b, HitTest);
+            }
+            g.DrawRectangle(Pens.White, HitTest);
         }
     }
 }

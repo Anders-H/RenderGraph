@@ -13,6 +13,8 @@ namespace RenderGraph
 {
     public partial class MainWindow : Form
     {
+        private int _mouseX;
+        private int _mouseY;
         private readonly Pen _pen = new Pen(Color.Black, 2f);
         public static int ChangeAmt;
         public static int SiblingsPerGeneration;
@@ -231,6 +233,15 @@ namespace RenderGraph
             foreach (var node in Nodes)
                 node.PaintNode(e.Graphics, Font, _pen);
 
+            foreach (var node in Nodes)
+            {
+                if (node.Selected)
+                {
+                    node.PaintSelection(e.Graphics);
+                    break;
+                }
+            }
+
             if (timer1.Enabled)
                 e.Graphics.DrawString("Running...", Font, Brushes.Red, 10, 10);
         }
@@ -274,6 +285,37 @@ namespace RenderGraph
                     SavePng(x.FileName);
                 }
             }
+        }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EditContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+        }
+
+        private void MainWindow_MouseDown(object sender, MouseEventArgs e)
+        {
+            _mouseX = e.X;
+            _mouseY = e.Y;
+            Nodes.Deselect();
+
+            var n = Nodes.GetAt(_mouseX, _mouseY);
+
+            if (n == null)
+            {
+                propertiesToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                propertiesToolStripMenuItem.Enabled = true;
+                n.Selected = true;
+            }
+            
+            Refresh();
+
         }
     }
 }

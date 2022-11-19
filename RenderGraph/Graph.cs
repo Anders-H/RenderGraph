@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace RenderGraph
 {
@@ -96,6 +97,9 @@ namespace RenderGraph
             CalculateScore();
         }
 
+        public Node GetAt(int x, int y) =>
+            this.FirstOrDefault(n => n.NodeIsAt(x, y));
+
         public void Scramble()
         {
             var changes = MainWindow.Random.Next(MainWindow.ChangeAmt) + 1;
@@ -104,6 +108,12 @@ namespace RenderGraph
                 n.ToRandomLocation();
 
             CalculateScore();
+        }
+
+        public void Deselect()
+        {
+            foreach (var n in this)
+                n.Selected = false;
         }
 
         public override string ToString() =>
