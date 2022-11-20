@@ -100,6 +100,9 @@ namespace RenderGraph
         public Node GetAt(int x, int y) =>
             this.FirstOrDefault(n => n.NodeIsAt(x, y));
 
+        public Node GetSelectedNode() =>
+            this.FirstOrDefault(n => n.Selected);
+
         public void Scramble()
         {
             var changes = MainWindow.Random.Next(MainWindow.ChangeAmt) + 1;

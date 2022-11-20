@@ -28,7 +28,7 @@ namespace RenderGraph
         public static int NodeWidth = 100;
         public static int NodeHeight = 50;
 
-        private Graph Nodes { get; set; }
+        private Graph Graph { get; set; }
 
         static MainWindow()
         {
@@ -42,7 +42,7 @@ namespace RenderGraph
         
         private void Form1_Load(object sender, EventArgs e)
         {
-            Nodes = new Graph();
+            Graph = new Graph();
         }
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -64,39 +64,51 @@ namespace RenderGraph
                 filename = x.FileName;
             }
 
-            var xml = File.ReadAllText(filename, Encoding.UTF8);
+            Cursor = Cursors.WaitCursor;
 
-            var dom = new XmlDocument();
-            dom.LoadXml(xml);
-            var doc = dom.DocumentElement;
-
-            ImageWidth = int.Parse(doc.SelectSingleNode("Properties/PlayfieldWidth").InnerText);
-            ImageHeight = int.Parse(doc.SelectSingleNode("Properties/PlayfieldHeight").InnerText);
-            NodeWidth = int.Parse(doc.SelectSingleNode("Properties/NodeWidth").InnerText);
-            NodeHeight = int.Parse(doc.SelectSingleNode("Properties/NodeHeight").InnerText);
-
-            foreach (XmlElement n in doc.SelectNodes("Nodes/Node"))
+            try
             {
-                var node = new Node(n.SelectSingleNode("ID").InnerText, n.SelectSingleNode("Text").InnerText);
-                node.NodeType = n.SelectSingleNode("Type").InnerText;
-                Nodes.Add(node);
-            }
+                var xml = File.ReadAllText(filename, Encoding.UTF8);
 
-            var relationId = 0;
+                var dom = new XmlDocument();
+                dom.LoadXml(xml);
+                var doc = dom.DocumentElement;
 
-            foreach (XmlElement n in doc.SelectNodes("Nodes/Node"))
-            {
-                var node = Nodes.GetNodeById(n.SelectSingleNode("ID").InnerText);
+                ImageWidth = int.Parse(doc.SelectSingleNode("Properties/PlayfieldWidth").InnerText);
+                ImageHeight = int.Parse(doc.SelectSingleNode("Properties/PlayfieldHeight").InnerText);
+                NodeWidth = int.Parse(doc.SelectSingleNode("Properties/NodeWidth").InnerText);
+                NodeHeight = int.Parse(doc.SelectSingleNode("Properties/NodeHeight").InnerText);
 
-                foreach (XmlElement r in n.SelectNodes("RelatesTo/Relation"))
+                foreach (XmlElement n in doc.SelectNodes("Nodes/Node"))
                 {
-                    var target = Nodes.GetNodeById(r.SelectSingleNode("ID").InnerText);
-                    var relation = new Relation(relationId++, node, target);
-                    node.Relations.Add(relation);
+                    var node = new Node(n.SelectSingleNode("ID").InnerText, n.SelectSingleNode("Text").InnerText);
+                    node.NodeType = n.SelectSingleNode("Type").InnerText;
+                    Graph.Add(node);
                 }
+
+                var relationId = 0;
+
+                foreach (XmlElement n in doc.SelectNodes("Nodes/Node"))
+                {
+                    var node = Graph.GetNodeById(n.SelectSingleNode("ID").InnerText);
+
+                    foreach (XmlElement r in n.SelectNodes("RelatesTo/Relation"))
+                    {
+                        var target = Graph.GetNodeById(r.SelectSingleNode("ID").InnerText);
+                        var relation = new Relation(relationId++, node, target);
+                        node.Relations.Add(relation);
+                    }
+                }
+
+                Cursor = Cursors.Default;
+            }
+            catch (SystemException ex)
+            {
+                Cursor = Cursors.Default;
+                MessageBox.Show(this, ex.Message, @"Load failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            Nodes.AddingCompleted();
+            Graph.AddingCompleted();
             ContextMenuStrip = EditContextMenu;
             Refresh();
         }
@@ -111,7 +123,7 @@ namespace RenderGraph
         {
             Generations++;
 
-            var currentScore = Nodes.Score;
+            var currentScore = Graph.Score;
 
             if (currentScore >= LastScore)
                 GenerationsOfUnimprovement++;
@@ -141,10 +153,10 @@ namespace RenderGraph
             var generations = new List<Graph>();
 
             for (var i = 0; i < SiblingsPerGeneration; i++)
-                generations.Add(Nodes.CopyNodes());
+                generations.Add(Graph.CopyNodes());
 
             foreach (var generation in generations)
-                generation.CopyRelations(Nodes);
+                generation.CopyRelations(Graph);
 
             var scrambeled = false;
 
@@ -163,8 +175,8 @@ namespace RenderGraph
 
             var n = generations.OrderBy(x => x.Score).First();
 
-            if (scrambeled || n.Score < Nodes.Score)
-                Nodes = n;
+            if (scrambeled || n.Score < Graph.Score)
+                Graph = n;
         }
 
         private void SaveSvg(string filename)
@@ -173,7 +185,7 @@ namespace RenderGraph
             {
                 sw.WriteLine($@"<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" viewBox=""0 0 {ImageWidth} {ImageHeight}"">");
 
-                foreach (var node in Nodes)
+                foreach (var node in Graph)
                 {
                     foreach (var targetPosition in from relation in node.Relations where relation.TargetNode != null select relation.TargetNode.GetCenter())
                     {
@@ -182,7 +194,7 @@ namespace RenderGraph
                     }
                 }
 
-                foreach (var node in Nodes)
+                foreach (var node in Graph)
                 {
                     var background = "#000000";
 
@@ -211,10 +223,10 @@ namespace RenderGraph
                 g.Clear(Color.DarkGreen);
                 g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                foreach (var node in Nodes)
+                foreach (var node in Graph)
                     node.PaintRelations(g, _pen);
 
-                foreach (var node in Nodes)
+                foreach (var node in Graph)
                     node.PaintNode(g, Font, _pen, false);
 
                 b.Save(filename, ImageFormat.Png);
@@ -227,13 +239,13 @@ namespace RenderGraph
             e.Graphics.SmoothingMode = SmoothingMode.None;
             e.Graphics.DrawRectangle(Pens.DarkOliveGreen, 0, 0, ImageWidth, ImageHeight);
 
-            foreach (var node in Nodes)
+            foreach (var node in Graph)
                 node.PaintRelations(e.Graphics, _pen);
 
-            foreach (var node in Nodes)
+            foreach (var node in Graph)
                 node.PaintNode(e.Graphics, Font, _pen, true);
 
-            foreach (var node in Nodes)
+            foreach (var node in Graph)
             {
                 if (node.Selected)
                 {
@@ -289,7 +301,15 @@ namespace RenderGraph
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var s = Graph.GetSelectedNode();
 
+            if (s == null)
+                return;
+
+            using (var x = new NodeProperties())
+            {
+                x.ShowDialog(this);
+            }
         }
 
         private void EditContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -300,9 +320,9 @@ namespace RenderGraph
         {
             _mouseX = e.X;
             _mouseY = e.Y;
-            Nodes.Deselect();
+            Graph.Deselect();
 
-            var n = Nodes.GetAt(_mouseX, _mouseY);
+            var n = Graph.GetAt(_mouseX, _mouseY);
 
             if (n == null)
             {
@@ -315,6 +335,12 @@ namespace RenderGraph
             }
             
             Refresh();
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F4)
+                propertiesToolStripMenuItem_Click(sender, EventArgs.Empty);
         }
     }
 }
