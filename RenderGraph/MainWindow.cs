@@ -215,7 +215,7 @@ namespace RenderGraph
                     node.PaintRelations(g, _pen);
 
                 foreach (var node in Nodes)
-                    node.PaintNode(g, Font, _pen);
+                    node.PaintNode(g, Font, _pen, false);
 
                 b.Save(filename, ImageFormat.Png);
             }
@@ -231,7 +231,7 @@ namespace RenderGraph
                 node.PaintRelations(e.Graphics, _pen);
 
             foreach (var node in Nodes)
-                node.PaintNode(e.Graphics, Font, _pen);
+                node.PaintNode(e.Graphics, Font, _pen, true);
 
             foreach (var node in Nodes)
             {
@@ -315,7 +315,6 @@ namespace RenderGraph
             }
             
             Refresh();
-
         }
     }
 }

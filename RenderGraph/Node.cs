@@ -132,13 +132,8 @@ namespace RenderGraph
             return v == 0 ? (byte)0 : v > 0 ? (byte)1 : (byte)2;
         }
 
-        public bool NodeIsAt(int x, int y)
-        {
-            var r = Rectangle.Intersect(Location, new Rectangle(x, y, 1, 1)).Width >= 2;
-
-            return true;
-        }
-            
+        public bool NodeIsAt(int x, int y) =>
+            Location.IntersectsWith(new Rectangle(x, y, 1, 1));
 
         private static bool IsOnSegment(Point p, Point q, Point r) =>
             q.X <= Math.Max(p.X, r.X) && q.X >= Math.Min(p.X, r.X) && q.Y <= Math.Max(p.Y, r.Y) && q.Y >= Math.Min(p.Y, r.Y);
@@ -149,7 +144,7 @@ namespace RenderGraph
                 g.DrawLine(p, GetCenter(), targetPosition);
         }
 
-        public void PaintNode(Graphics g, Font font, Pen p)
+        public void PaintNode(Graphics g, Font font, Pen p, bool paintSelection)
         {
             var format = new StringFormat();
             format.Alignment = StringAlignment.Center;
@@ -169,15 +164,20 @@ namespace RenderGraph
 
             g.FillRectangle(b, Location);
             g.DrawRectangle(p, Location);
+
+            if (paintSelection && Selected)
+            {
+                using (var transparentBrush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
+                {
+                    g.FillRectangle(transparentBrush, HitTest);
+                }
+            }
+
             g.DrawString(Text, font, Brushes.White, Location, format);
         }
 
         public void PaintSelection(Graphics g)
         {
-            using (var b = new SolidBrush(Color.FromArgb(127, 40, 40, 40)))
-            {
-                g.FillRectangle(b, HitTest);
-            }
             g.DrawRectangle(Pens.White, HitTest);
         }
     }
