@@ -9,20 +9,23 @@ namespace RenderGraph
     {
         private const int Margin = 8;
         private Rectangle _location;
+        private readonly Image _lockedImage;
         public bool Selected { get; set; }
         public string Id { get; }
         public string Text { get; set; }
         public string NodeType { get; set; }
         public Rectangle HitTest { get; private set; }
         public List<Relation> Relations { get; }
+        public bool Locked { get; set; }
 
-        public Node(string id, string text)
+        public Node(string id, string text, Image lockedImage)
         {
             Id = id;
             Location = GetRandomLocation();
             Relations = new List<Relation>();
             Text = text;
             NodeType = "";
+            _lockedImage = lockedImage;
         }
 
         public Rectangle Location
@@ -36,10 +39,11 @@ namespace RenderGraph
         }
 
         public Node CopyNode() =>
-            new Node(Id, Text)
+            new Node(Id, Text, _lockedImage)
             {
                 Location = Location,
-                NodeType = NodeType
+                NodeType = NodeType,
+                Locked = Locked
             };
 
         public void CopyRelations(Graph source, Graph target)
@@ -59,9 +63,12 @@ namespace RenderGraph
         private static Rectangle GetRandomLocation() =>
             new Rectangle(Margin + MainWindow.Random.Next(MainWindow.ImageWidth - (MainWindow.NodeWidth + Margin + Margin)), Margin + MainWindow.Random.Next(MainWindow.ImageHeight - (MainWindow.NodeHeight + Margin)), MainWindow.NodeWidth, MainWindow.NodeHeight);
 
-        public void ToRandomLocation() =>
-            Location = GetRandomLocation();
-
+        public void ToRandomLocation()
+        {
+            if (!Locked)
+                Location = GetRandomLocation();
+        }
+        
         public Point GetCenter() =>
             new Point(Location.X + Location.Width / 2, Location.Y + Location.Height / 2);
 
@@ -144,7 +151,7 @@ namespace RenderGraph
                 g.DrawLine(p, GetCenter(), targetPosition);
         }
 
-        public void PaintNode(Graphics g, Font font, Pen p, bool paintSelection)
+        public void PaintNode(Graphics g, Font font, Pen p, bool paintSelection, bool paintAttributes)
         {
             var format = new StringFormat();
             format.Alignment = StringAlignment.Center;
@@ -174,6 +181,9 @@ namespace RenderGraph
             }
 
             g.DrawString(Text, font, Brushes.White, Location, format);
+
+            if (paintAttributes && Locked)
+                g.DrawImageUnscaled(_lockedImage, Location.X + 2, Location.Y + 2);
         }
 
         public void PaintSelection(Graphics g)

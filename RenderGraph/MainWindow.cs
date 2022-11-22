@@ -30,6 +30,8 @@ namespace RenderGraph
 
         private Graph Graph { get; set; }
 
+
+
         static MainWindow()
         {
             Random = new Random();
@@ -81,7 +83,7 @@ namespace RenderGraph
 
                 foreach (XmlElement n in doc.SelectNodes("Nodes/Node"))
                 {
-                    var node = new Node(n.SelectSingleNode("ID").InnerText, n.SelectSingleNode("Text").InnerText);
+                    var node = new Node(n.SelectSingleNode("ID").InnerText, n.SelectSingleNode("Text").InnerText, imageList1.Images[0]);
                     node.NodeType = n.SelectSingleNode("Type").InnerText;
                     Graph.Add(node);
                 }
@@ -227,7 +229,7 @@ namespace RenderGraph
                     node.PaintRelations(g, _pen);
 
                 foreach (var node in Graph)
-                    node.PaintNode(g, Font, _pen, false);
+                    node.PaintNode(g, Font, _pen, false, false);
 
                 b.Save(filename, ImageFormat.Png);
             }
@@ -243,7 +245,7 @@ namespace RenderGraph
                 node.PaintRelations(e.Graphics, _pen);
 
             foreach (var node in Graph)
-                node.PaintNode(e.Graphics, Font, _pen, true);
+                node.PaintNode(e.Graphics, Font, _pen, true, true);
 
             foreach (var node in Graph)
             {
@@ -308,12 +310,15 @@ namespace RenderGraph
 
             using (var x = new NodeProperties())
             {
-                x.ShowDialog(this);
+                x.Node = s;
+                if (x.ShowDialog(this) == DialogResult.OK)
+                    Refresh();
             }
         }
 
         private void EditContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            propertiesToolStripMenuItem.Enabled = Graph.GetSelectedNode() != null;
         }
 
         private void MainWindow_MouseDown(object sender, MouseEventArgs e)
@@ -324,15 +329,8 @@ namespace RenderGraph
 
             var n = Graph.GetAt(_mouseX, _mouseY);
 
-            if (n == null)
-            {
-                propertiesToolStripMenuItem.Enabled = false;
-            }
-            else
-            {
-                propertiesToolStripMenuItem.Enabled = true;
+            if (n != null)
                 n.Selected = true;
-            }
             
             Refresh();
         }

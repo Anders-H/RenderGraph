@@ -30,16 +30,16 @@ namespace Tests
         [TestMethod]
         public void LinesIntersect()
         {
-            var n1 = new Node("A", "A");
+            var n1 = new Node("A", "A", null);
             n1.Location = new Rectangle(10, 10, 50, 50);
 
-            var n2 = new Node("B", "B");
+            var n2 = new Node("B", "B", null);
             n2.Location = new Rectangle(1000, 1000, 50, 50);
 
-            var n3 = new Node("C", "C");
+            var n3 = new Node("C", "C", null);
             n3.Location = new Rectangle(1000, 10, 50, 50);
 
-            var n4 = new Node("D", "D");
+            var n4 = new Node("D", "D", null);
             n4.Location = new Rectangle(10, 1000, 50, 50);
 
             Assert.IsTrue(n1.LinesIntersect(n2, n3, n4));
@@ -55,13 +55,13 @@ namespace Tests
         [TestMethod]
         public void IsIntersectedByLine()
         {
-            var n = new Node("A", "A");
+            var n = new Node("A", "A", null);
             n.Location = new Rectangle(100, 100, 50, 50);
 
-            var left = new Node("B", "B");
+            var left = new Node("B", "B", null);
             left.Location = new Rectangle(10, 10, 50, 50);
 
-            var right = new Node("C", "C");
+            var right = new Node("C", "C", null);
             right.Location = new Rectangle(200, 200, 50, 50);
 
             Assert.IsTrue(n.IsIntersectedByLine(left, right));
